@@ -12,8 +12,12 @@ spec:
       labels:
         app: eks-app
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: eks-app
           image: manukumarkc/eks-static-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
+
