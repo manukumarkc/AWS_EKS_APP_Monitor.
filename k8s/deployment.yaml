@@ -11,13 +11,17 @@ spec:
     metadata:
       labels:
         app: eks-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "5000"
     spec:
-      imagePullSecrets:
-        - name: regcred
       containers:
         - name: eks-app
           image: manukumarkc/eks-static-app:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
+      imagePullSecrets:
+        - name: regcred
 
