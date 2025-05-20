@@ -32,11 +32,16 @@ eks-static-app/
 ├── README.md              #Clear Description of Readme content
 ```
 
-# Application on live:
+# Application on live: url: http://a6ce30b299dce44e8a25f58341c21e00-288169375.eu-west-1.elb.amazonaws.com/
 
 ![image](https://github.com/user-attachments/assets/a9108a9b-81ae-4008-a3c0-b560d91127de)
 
 # Build through GitHub Actions workflow:
+
+![image](https://github.com/user-attachments/assets/96ea0859-0ae1-4049-89f1-6d2689cac186)
+
+# Monitoring through Grafana Relatime.
+![image](https://github.com/user-attachments/assets/a1f1b630-8c7c-435d-b0e7-003f9fbbe97c)
 
  
 # Step 1: Build the Flask Static Web App
