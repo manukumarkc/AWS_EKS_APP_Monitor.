@@ -1,32 +1,36 @@
 # Deploying a Static Flask Web App on AWS EKS with CI/CD, Trivy, Prometheus & Grafana
 
-#This project demonstrates:
+##This project demonstrates:
 
-✅ Static web app using Flask + HTML
-✅ Dockerized application pushed to Docker Hub
-✅ CI/CD with GitHub Actions
-✅ Deployed to AWS EKS cluster
-✅ Monitored with Prometheus + Grafana
-✅ Image scanned with Trivy for vulnerabilities
-📁 Project Structure
+1:Static web app with Flask and HTML.
+2:Containerize the app with Docker and push it to Docker Hub.
+3:CI/CD cretion with GitHub Action Workflows.
+4:Deploying the Application on AWS EKS Cluster.
+5:Monitor the Application and System metrics with Prometheus and Grafana.
+6:Check for the Image Scanned Vulnerabilities from Trivy.
+
+#Project Tree Structure:
 
 ```bash
 eks-static-app/
-├── app.py                 # Flask app
-├── index.html             # HTML content
-├── requirements.txt       # Python dependencies
-├── Dockerfile             # Docker build config
+├── app.py                 # app.py of flask application
+├── index.html             # HTML details for static page 
+├── requirements.txt       #python flask dependencies.
+├── Dockerfile             # Dockerfile for containerizing the app
 ├── k8s/
-│   ├── deployment.yaml    # Kubernetes deployment
-│   └── service.yaml       # Kubernetes service (LoadBalancer)
+│   ├── deployment.yaml    #Deployment manifests file
+│   └── service.yaml       #kubernets service (loadbalancer) Manifests file.
 ├── .github/
 │   └── workflows/
 │       └── ci-cd.yml      # GitHub Actions workflow
-├── README.md              # This file
+├── README.md              #Clear Description of Readme content
 ```
 
-#🛠️ Step 1: Build the Flask Static Web App
 
+# Step 1: Build the Flask Static Web App
+
+-inside the app.py with using return render_template_string function rendering the index.html page to display the application content.
+-below are the contents inside app.py
 app.py
 
 ```bash
@@ -40,12 +44,14 @@ if __name__ == '__main__':
 ```
 index.html
 
+-index.html content with consisting of Header, body and footer in HTML with backgroung and bold contents.
+
 ```bash
 <!DOCTYPE html>
 <html>
 <head>
   <style>
-    header, footer { background: #007bff; color: white; padding: 1rem; font-weight: bold; text-align: center; }
+    header, footer { background: #76eec6; color: white; padding: 1rem; font-weight: bold; text-align: center; }
     main { padding: 2rem; text-align: center; }
   </style>
 </head>
@@ -59,25 +65,32 @@ index.html
 
 requirements.txt
 
+-Contents written inside the requirements.txt file are utilized while creating docker container.
+
 ```bash
 flask
 ```
 
-#🐳 Step 2: Dockerize the App
+# Step 2: Dockerize the App
+
+-Below are the details of Docker file and Explanation of Each Line.
 
 Dockerfile
 
 ```bash
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-EXPOSE 5000
-CMD ["python", "app.py"]
+FROM python:3.9-slim #Getting the image from Python official image slim version.
+WORKDIR /app #setting the workdirectory.
+COPY requirements.txt . #copy the requirements file to present directory.
+RUN pip install -r requirements.txt #run pip install command to install flask app.
+COPY . .     # Copy application code to work directory.
+EXPOSE 5000 #expose the app to 5000 port number
+CMD ["python", "app.py"]  # set CMD for python and app.py for container runtime command
 ```
 
 #Build & Push to Docker Hub
+
+-Once Dockerfile is written, Container is built with dockerfile details.
+-docker image is tagged to docker hub id and pushed to docker hub,
 
 ```bash
 docker build -t hello-world-app .
@@ -86,58 +99,62 @@ docker login
 docker push manukumarkc/eks-static-app:latest
 ```
 
-    Make sure your Docker Hub repo exists and is public (or configure a secret in Kubernetes for private repos).
+-Once Docker login is successful, the Docker login credentials are added n Github>Setting>Secrets and Variables>add secrets.
 
-#🔄 Step 3: CI/CD with GitHub Actions
+#Step 3: CI/CD with GitHub Actions
+
+-Creating CI-CD workflow to create docker app and push it to DockerHUb and have Trivy for Image Vulnerability Scanning.
 
 .github/workflows/ci-cd.yml
 
 ```bash
-name: CI/CD Pipeline
+name: CI/CD Pipeline #Name for the Pipeline.
 
 on:
-  push:
+  push:  #only Push to the Main branc is triggered.
     branches:
       - main
 
 jobs:
-  build:
+  build: #job builds on ubuntu latest image server.
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout code #code checkout from Github to run the pipeline.
       uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
+    - name: Install dependencies #Installs all the dependencies and requirements for the application and format checking through Flake.
+      run: | 
         python -m pip install --upgrade pip
         pip install flake8
         flake8 app.py
 
-    - name: Set up Docker Buildx
+    - name: Set up Docker Buildx  #setting up Docker Buildx for effective platform indedependent image creation.
       uses: docker/setup-buildx-action@v3
 
-    - name: Log in to Docker Hub
+    - name: Log in to Docker Hub #Docker login with Credentials inside github secrets repository.
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image #Docker image build and push it to Docker hub
       run: |
         docker build -t manukumarkc/eks-static-app:latest .
         docker push manukumarkc/eks-static-app:latest
 
-    - name: Trivy Scan
+    - name: Trivy Scan #Docker image Vulnerability Scan for the Images created and pushed in Dockerhub,
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: manukumarkc/eks-static-app:latest
 ```
 
-    Add GitHub secrets DOCKER_USERNAME and DOCKER_PASSWORD.
+    #Add GitHub secrets DOCKER_USERNAME and DOCKER_PASSWORD.
 
-#☸️ Step 4: Kubernetes Deployment on AWS EKS
-Create Cluster with eksctl
+# Step 4: Kubernetes Deployment on AWS EKS
+-Below is the Command to deploy EKS Cluster with t2.medium configuration, and hosting the application with Manifests files by Manual deployment.
+
+-Create Cluster with eksctl
 
 ```bash
 eksctl create cluster \
@@ -149,6 +166,8 @@ eksctl create cluster \
 ```
 
 Kubernetes Manifests
+
+-Kubernetes Manifests file for Deployment which pulls the image from Docker Hub latest image and creates Pod and Services inside Deployment.
 
 k8s/deployment.yaml
 ```bash
@@ -177,6 +196,9 @@ spec:
             - containerPort: 5000
 ```
 k8s/service.yaml
+
+-Service Manifest file of Type Loadbalancer which creates Loadbalancer to expose the app to externally for Public Access:
+
 ```bash
 apiVersion: v1
 kind: Service
@@ -191,15 +213,23 @@ spec:
       targetPort: 5000
 ```
 Deploy to EKS
+
+-Manual Deployment of Deployment and Service YAML file for hosting application on EKS Cluster.
+
 ```bash
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
-Get the public IP:
+Get the public IP: #the LoadBalancer IP is provided with Public access of application,Get the SVC URL and Access the application on browser.
+
 ```bash
 kubectl get svc eks-static-service
 ```
-📊 Step 5: Monitoring with Prometheus & Grafana
+# Step 5: Monitoring with Prometheus & Grafana
+
+-Monitoring services are installed for Prometheus and Grafana.
+-Below are the commands for installing Prometheus and Grafana.
+
 ```bash
 Add Helm Repo & Install
 ```
@@ -209,18 +239,19 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 ```
 
-```bash
-kubectl create namespace monitoring
+```bash 
+kubectl create namespace monitoring #creating a separate namespace for isolation.
 
 helm install monitoring prometheus-community/kube-prometheus-stack \
   --namespace monitoring
 ```
-Access Grafana
+Access Grafana #accessing the SVC url for Grafana Dashboard.
+
 ```bash
 kubectl get svc -n monitoring monitoring-grafana
 ```
 
-    Type: LoadBalancer or NodePort
+    Type: LoadBalancer 
 
     Default login:
 
@@ -228,14 +259,12 @@ kubectl get svc -n monitoring monitoring-grafana
 
         Password: prom-operator
 
-#📈 Step 6: Visualize Metrics in Grafana
+# Step 6: Visualize Metrics in Grafana
 
     Open Grafana from the LoadBalancer IP.
 
     Login using default credentials.
 
-    Go to Dashboards > New > Import.
+-Once the Dashboard is visible, there are two newly added Dashboard for Accessing System metrics and Application metrics of EKS Cluster.
+-Below is the Reference image for reference:
 
-    Use dashboard ID: 1860 (Kubernetes Deployment Overview)
-
-    Select the Prometheus data source (already set).
