@@ -278,9 +278,9 @@ kubectl get svc -n monitoring monitoring-grafana
 
 # Step 6: Visualize Metrics in Grafana
 
-    Open Grafana from the LoadBalancer IP.
+-Open Grafana from the LoadBalancer IP.
 
-    Login using default credentials.
+-Login using default credentials.
 
 -Once the Dashboard is visible, there are two newly added Dashboard for Accessing System metrics and Application metrics of EKS Cluster.
 -Below is the Reference image for reference:
