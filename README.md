@@ -40,7 +40,7 @@ eks-static-app/
 
 ![image](https://github.com/user-attachments/assets/96ea0859-0ae1-4049-89f1-6d2689cac186)
 
-# Monitoring through Grafana Realtime: Monitor Live: add7193c39d164826962d161228d0ebb-1368902152.eu-west-1.elb.amazonaws.com
+# Monitoring through Grafana Realtime: Monitor Live: http://add7193c39d164826962d161228d0ebb-1368902152.eu-west-1.elb.amazonaws.com
 >Dashboar>Nodeport2>visualize Metrics:
 
 ![image](https://github.com/user-attachments/assets/a1f1b630-8c7c-435d-b0e7-003f9fbbe97c)
