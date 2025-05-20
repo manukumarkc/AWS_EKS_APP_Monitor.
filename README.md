@@ -3,13 +3,19 @@
 ##This project demonstrates:
 
 1:Static web app with Flask and HTML.
+
 2:Containerize the app with Docker and push it to Docker Hub.
+
 3:CI/CD cretion with GitHub Action Workflows.
+
 4:Deploying the Application on AWS EKS Cluster.
+
 5:Monitor the Application and System metrics with Prometheus and Grafana.
+
 6:Check for the Image Scanned Vulnerabilities from Trivy.
 
-#Project Tree Structure:
+
+# Project Tree Structure:
 
 ```bash
 eks-static-app/
