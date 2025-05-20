@@ -32,8 +32,13 @@ eks-static-app/
 ├── README.md              #Clear Description of Readme content
 ```
 
+# Application on live:
+
 ![image](https://github.com/user-attachments/assets/a9108a9b-81ae-4008-a3c0-b560d91127de)
 
+# Build through GitHub Actions workflow:
+
+ 
 # Step 1: Build the Flask Static Web App
 
 -inside the app.py with using return render_template_string function rendering the index.html page to display the application content.
