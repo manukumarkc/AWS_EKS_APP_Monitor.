@@ -32,6 +32,7 @@ eks-static-app/
 ├── README.md              #Clear Description of Readme content
 ```
 
+![image](https://github.com/user-attachments/assets/a9108a9b-81ae-4008-a3c0-b560d91127de)
 
 # Step 1: Build the Flask Static Web App
 
